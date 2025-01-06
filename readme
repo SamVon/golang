@@ -1,0 +1,94 @@
+# Go module
+
+Go module ແມ່ນ collection ຂອງ go package ທີ່ກຽວຂ້ອງມາໃຊ້ງານໃນ project
+
+ໃນການຈັດການ package (ຫຼື Dependency) ທີ່ນຳເຂົ້າມາໃຊ້ວຽກ ເພືອໃຫ້ງ່າຍ = ຈຳເປັນຕ້ອງມີ Go module ເປັນຕົວຈັດການ dependency ຫຼື import ເຂົ້າມາ
+
+ໂດຍການຈັດການ module ນັ້ນເຮົາຈະມີ 2 files ທີ່ເປັນ file ຫຼັກຄື
+
+go.mod list dependency ทั้งหมดของ go ไว้
+go.sum ຄືໄຟຮ (ໃຊ້ເຊັກໄຟຮທີ່ load ມາຖືກ version ຫຼືບໍ)
+
+main ແມ່ນຟາຍຫຼັກຂອງ go = ຕ້ອງມີ main function ເພືອເປັນຈຸດເລິມຕົ້ນຂອງຝັງຊັ້ນ
+
+file go ອື່ນໆ ສາມາດ import ຜ່ານ package ທີ່ປະກາດໄດ້
+
+ປະໂຫຍດຂອງການໃຊ້ Go package
+
+ເຮັດໃຫ້ code ເບິ່ງງ່າຍ ແລະ ສາມາດ ນຳ Code ກັບມາໃຊ້ໃໝໄດ້ງ່າຍ
+
+ສາມາດສ້າງເປັນ Package ເພືອໃຫ້ຄົນອື່ນສາມາດ ໃຊ້ source code ເຮົາໄດ້ (ຜ່ານຄຳສັ່ງ Go Get ທີ່ເຮົາເຮັດໄປ)
+
+#Note
+
+1. go ບໍ່ມີ concept class ທຸກຢ່າງຈັດການຜ່ານ funcation and package
+2. in 1 folder have only one package (if you set package name different in same folder = error)
+3. go has folder name internal you can manage visibility(ເເນມເຫັນ)
+ ຖ້າເຮົາມີ library ເພິ້ມເຕີມເປັນແບບ ນີ້ ເຊັນ ມີ folder internal/lopster ທີ່ເປັນ Package lopster    
+
+├── go.mod
+├── go.sum
+├── main.go
+└── mike
+  ├── internal
+  │   └── samphathai
+  │       └── samphathai.go
+  ├── samphathai22.go
+  └── test.go
+
+```
+ໜ້າລວມ library ສາມາດເຂົ້າເບິ່ງໄດ້ລິ້ງນີ້ https://pkg.go.dev/
+```
+
+## Installation
+
+```bash
+go mod init example.com/m/v2
+``` 
+
+## Usage
+
+```bash 
+go get github.com/google/uuid 
+```
+
+```main.go
+import "github.com/google/uuid"
+
+func main () {
+# parater =id input value uuid 
+    id := uuid.New()
+
+# show Generared uuid 
+    fmt.Printf("Generated UUID: %S\n", id )
+}
+
+``` 
+
+## Go module stucture
+
+├── go.mod --> package.json
+├── go.sum --> checksum library version
+└── main.go --> file project
+
+## check library in module
+
+```bash 
+go list -m all
+```
+
+# write function 
+```private func
+func sayHello
+```
+
+```publie func
+func SayHello 
+```
+
+#cmd run 
+```bash
+go run main.go
+```
+
+%d %S
