@@ -229,6 +229,8 @@ func main() {
 	app.Delete("/books/:id", deleteBook)
 
 	app.Post("/uploadfile", uploadFile)
+
+	app.Get("/api/config", getEnv)
 	//app.Listen(":8080") // automatically assings a free port
 
 	port := os.Getenv("PORT")
@@ -252,4 +254,16 @@ func uploadFile(c *fiber.Ctx) error {
 	}
 
 	return c.SendString("File upload complete!")
+}
+
+func getEnv(c *fiber.Ctx) error {
+	if value, exists := os.LookupEnv("SECRET"); exists {
+		return c.JSON(fiber.Map{
+			"SECRET": value,
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"SECRET": "defaultsecret",
+	})
 }
