@@ -228,6 +228,7 @@ func main() {
 	app.Put("/books/:id", updateBook)
 	app.Delete("/books/:id", deleteBook)
 
+	app.Post("/uploadfile", uploadFile)
 	//app.Listen(":8080") // automatically assings a free port
 
 	port := os.Getenv("PORT")
@@ -235,4 +236,20 @@ func main() {
 		port = "8080" // Default port
 	}
 	app.Listen(":" + port)
+}
+
+func uploadFile(c *fiber.Ctx) error {
+	file, err := c.FormFile("image")
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+	}
+
+	err = c.SaveFile(file, "./uploads/"+file.Filename)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	}
+
+	return c.SendString("File upload complete!")
 }
