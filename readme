@@ -91,4 +91,27 @@ func SayHello
 go run main.go
 ```
 
-%d %S
+%d = number %S = string
+
+
+## install fiber
+```bash
+go get github.com/gofiber/fiber/v2
+
+
+# use nodemon all file
+``bash
+nodemon --exec go run . --signal SIGTERM
+
+# strut 
+create func 1. paramater 2. err 3. condition  4. status code
+
+
+# use nodemon all file
+``bash
+nodemon --watch .  --ext go --exec go run . --signal SIGTERM
+
+# use nodemon run watch all fil and fil.go has changeiing 
+```bash
+nodemon --watch . --ext go --exec go run . --signal SIGTERM
+```

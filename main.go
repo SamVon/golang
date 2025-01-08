@@ -1,11 +1,3 @@
-// package main
-
-// import (
-// 	"fmt"
-// 	"log"
-// 	"net/http"
-// )
-
 // func main() {
 // 	fmt.Println("Helllo, World!")
 // 	id := uuid.New()
@@ -181,3 +173,97 @@
 // 		log.Fatal(err)
 // 	}
 // }
+
+// package main
+
+// import (
+//   "github.com/gofiber/fiber/v2"
+// )
+
+// func main() {
+//   app := fiber.New()
+
+//   app.Get("/hello", func(c *fiber.Ctx) error {
+//     return c.SendString("Hello World")
+//   })
+
+//   app.Listen(":8080")
+// }
+
+package main
+
+import (
+	"os"
+
+	"github.com/gofiber/fiber/v2"
+)
+
+// Book struct to hold book data
+type Book struct {
+	ID     int    `json:"id"`
+	Title  string `json:"title"`
+	Auther string `json:"auther"`
+}
+
+var books []Book
+
+func main() {
+	app := fiber.New()
+
+	// // set path Get input /hello
+	// app.Get("/hello", func(c *fiber.Ctx) error {
+	// 	// return custom and error
+	// 	return c.SendString("Hello world")
+	// })
+
+	books = append(books, Book{
+		ID: 1, Title: "Kai kub tham", Auther: "sam",
+	})
+	books = append(books, Book{ID: 2, Title: "samphathai", Auther: "sammy"})
+
+	//create api  // create func input value (c *fiber.Ctx(is CONTENT))
+	app.Get("/books", getBooks)
+	app.Get("/books/:id", getBook)
+	app.Post("/books", createBook)
+	app.Put("/books/:id", updateBook)
+	app.Delete("/books/:id", deleteBook)
+
+	app.Post("/uploadfile", uploadFile)
+
+	app.Get("/api/config", getEnv)
+	//app.Listen(":8080") // automatically assings a free port
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Default port
+	}
+	app.Listen(":" + port)
+}
+
+func uploadFile(c *fiber.Ctx) error {
+	file, err := c.FormFile("image")
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+	}
+
+	err = c.SaveFile(file, "./uploads/"+file.Filename)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	}
+
+	return c.SendString("File upload complete!")
+}
+
+func getEnv(c *fiber.Ctx) error {
+	if value, exists := os.LookupEnv("SECRET"); exists {
+		return c.JSON(fiber.Map{
+			"SECRET": value,
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"SECRET": "defaultsecret",
+	})
+}
